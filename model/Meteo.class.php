@@ -133,7 +133,7 @@ class Meteo extends Model {
           'SELECT id, `name`, lon, lat FROM cities ', []);
     }
 
-    public static function getCityId($cityName = "Helsinki")
+    public static function getCityId($cityName)
     {
 
       return db::getInstance()->Select(

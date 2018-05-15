@@ -24,7 +24,7 @@ class WeatherController extends Controller
         var_dump($cities[$cityId - 1]);
         $page[0]['content'] .= "<h2>Kaupunki: ".$cities[$cityId -1]['name']."</h2>";
         $round_meteo = Meteo::roundMeteoData($meteo);
-        return ['page' => $page, 'meteo' => $round_meteo];
+        return ['page' => $page, 'meteo' => $round_meteo, 'cities' => $cities];
     }
 }
 ?>

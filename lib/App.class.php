@@ -37,6 +37,7 @@ class App
                     $_GET['id'] = $url[2];
                     //var_dump($url);
                 }
+                else $_GET['id'] = "Helsinki";
             }
 
         }
@@ -50,7 +51,7 @@ class App
             $controller = new $controllerName(); // создаем объект класса с именем контроллера, напр IndexController
             $data = [ // данные на основе методов контроллера
                 'content_data' => $controller->$methodName($_GET), //данные контента формируются при выполнении метода контроллера
-                'title' => $controller->title                
+                'title' => $controller->title
             ];
             //var_dump($data);
             $view = $controller->view . '/' . $methodName . '.html'; // формируем имя шаблона
