@@ -1,0 +1,23 @@
+{% include 'header.html' %}
+<div class="col-sm-9">
+
+  <div class="row top15">
+    <h1>{{ content_data.h1 }}</h1>
+    {% if content_data.message %}<div class="alert alert-info">{{ content_data.message }}</div>
+    {% else %}
+    <table class="table">
+      <thead><tr><th>Товар</th>
+      <th>Количество</th></tr></thead>
+      {% for cart in content_data.cart %}
+      <tbody><tr><td>{{ cart[0] }}</td>
+      <td>{{ cart[1] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <button type="button">Оформить покупку</button>
+  <button type="button" onClick = "clearBasket()">Очистить корзину</button>
+  {% endif %}
+  </div>
+</div>
+{% include 'footer.html' %}

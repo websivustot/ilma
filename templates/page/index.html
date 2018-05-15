@@ -1,0 +1,12 @@
+{% include 'header.html' %}
+<div class="wrap">
+    <div class="container content">
+        {% if content_data.message != "" %}
+        <br><div class="alert alert-success">
+            <strong>{{ content_data.message}}</strong>
+        </div>
+        {% endif %}
+        {{ content_data.page.0.content | raw }}
+    </div>
+</div>
+{% include 'footer.html' %}

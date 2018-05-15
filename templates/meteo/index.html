@@ -1,0 +1,11 @@
+{% include 'header.html' %}
+<div class="wrap">
+    <div class="container content">
+      <h1></h1>
+      {% for string in content_data.meteo %}
+        {{ string | raw}}
+      {% endfor %}
+        {{ content_data.meteo | raw}}
+    </div>
+</div>
+{% include 'footer.html' %}
