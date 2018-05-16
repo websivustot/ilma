@@ -25,7 +25,20 @@ class App
 
                 //var_dump($url[0]);
                 $_GET['lang'] = $url[0]; // первую часть урл назначаем языком
-                $_GET['page'] = 'Page';
+                $fileName = '../controller/' . ucfirst($url[1]) . 'Controller.class.php';
+                //var_dump($url[0], $url[1], $fileName);
+                if (is_file($fileName)) {
+                 $_GET['page'] = $url[1];
+               }
+                else $_GET['page'] = 'Page';
+                if ($url[2]) {
+                    $_GET['action'] = $url[2];
+                }
+                if ($url[3]) {
+                    $_GET['id'] = $url[3];
+                    //var_dump($url);
+                }
+                else $_GET['id'] = "Helsinki";
 
             }
             else {

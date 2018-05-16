@@ -25,7 +25,10 @@ class PageController extends Controller
         //var_dump($form);
 
         $page = Page::getPage($data['path']);
-        var_dump($data);
+        if (empty($page)) {
+          $page = [['content' => '<h1>404 Sivua ei löydy :(</h1>', 'title' => '404 Sivua ei löydy :(']];
+        }
+        //var_dump($data);
         //var_dump($page);
         return ['page' => $page, 'message' => $message];
     }

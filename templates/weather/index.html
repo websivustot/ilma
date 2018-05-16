@@ -13,7 +13,12 @@
 
           <p class="param">Kosteus {{ content_data.meteo.0.hum }} %</p>
           <p class="param">Ilmanpaine {{ content_data.meteo.0.pres }} hPa</p>
-
+          <ul class="cities">
+            <li><strong>Kaupungit: </strong></li>
+          {% for city in content_data.cities %}
+          <li><a href="/fi/weather/today/{{ city.name }}/">{{ city.name }}</a></li>
+          {% endfor %}
+          </ul>
 
     </div>
 </div>

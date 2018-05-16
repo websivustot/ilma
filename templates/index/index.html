@@ -1,20 +1,24 @@
 {% include 'header.html' %}
 <div class="wrap">
-    <div class="container content">
-        {% if content_data.message != "" %}
-        <br><div class="alert alert-success">
-            <strong>{{ content_data.message}}</strong>
-        </div>
-        {% endif %}
-        {{ content_data.page.0.content | raw }}
+  <div class="container content">
+      {% if content_data.message != "" %}
+      <br><div class="alert alert-success">
+          <strong>{{ content_data.message}}</strong>
+      </div>
+      {% endif %}
+      {{ content_data.page.0.content | raw }}
 
-          <p>Lämpötila <span class="param">{{ content_data.meteo.0.temp }} &deg; C</span></p>
-          <p class="param">Tuuli <span class="glyphicon glyphicon-arrow-up" style="transform: rotate({{content_data.meteo.0.dir}}deg);"></span> {{ content_data.meteo.0.speed }} m/s</p>
+        <p>Lämpötila <span class="param">{{ content_data.meteo.0.temp }} &deg; C</span></p>
+        <p class="param">Tuuli <span class="glyphicon glyphicon-arrow-up" style="transform: rotate({{content_data.meteo.0.dir}}deg);"></span> {{ content_data.meteo.0.speed }} m/s</p>
 
-          <p class="param">Kosteus {{ content_data.meteo.0.hum }} %</p>
-          <p class="param">Ilmanpaine {{ content_data.meteo.0.pres }} hPa</p>
-
-
-    </div>
+        <p class="param">Kosteus {{ content_data.meteo.0.hum }} %</p>
+        <p class="param">Ilmanpaine {{ content_data.meteo.0.pres }} hPa</p>
+        <ul class="cities">
+          <li><strong>Kaupungit: </strong></li>
+        {% for city in content_data.cities %}
+        <li><a href="/weather/today/{{ city.name }}/">{{ city.name }}</a></li>
+        {% endfor %}
+      </ul>
+  </div>
 </div>
 {% include 'footer.html' %}
