@@ -30,6 +30,7 @@ class WeatherController extends Controller
         $meteo = Meteo::getMeteoData($gribFileName,$cityId);
         //var_dump($cities[$cityId - 1]);
         $page[0]['content'] .= "<h2>Kaupunki: ".$cities[$cityId -1]['name']."</h2>";
+        $page[0]['title'] = $cities[$cityId -1]['name'] . ': ' . $page[0]['title'];
         $round_meteo = Meteo::roundMeteoData($meteo);
         $sunrise = Meteo::getSunriseTime($cities[$cityId -1],$gribFileName);
         return ['page' => $page, 'meteo' => $round_meteo, 'cities' => $cities, 'sunrise' => $sunrise];
