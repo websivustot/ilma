@@ -57,6 +57,7 @@ class App
         else{
             $_GET['lang'] = 'fi';
             $_GET['page'] = 'Index'; // В противном случае индексная страница
+            $_GET['id'] = "Helsinki";
         }
         if (isset($_GET['page'])) {
             $controllerName = ucfirst($_GET['page']) . 'Controller'; // формируем имя контроллера, первая заглавная

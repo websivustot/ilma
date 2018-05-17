@@ -141,6 +141,22 @@ class Meteo extends Model {
 
     }
 
+    public static function getSunriseTime($city,$date)
+    {
+      /* calculate the sunrise time for Lisbon, Portugal
+      Latitude: 38.4 North
+      Longitude: 9 West
+      Zenith ~= 90
+      offset: +1 GMT
+      */
+      $a = strptime($date,'%Y%m%d%H');
+      $timestamp = mktime(0, 0, 0, $a['tm_mon']+1, $a['tm_mday'], $a['tm_year']+1900);
+      return ([date_sunrise($timestamp, SUNFUNCS_RET_STRING, $city['lat'], $city['lon'], 90, 3),date_sunset($timestamp, SUNFUNCS_RET_STRING, $city['lat'], $city['lon'], 90, 3)]);
+      //var_dump( date('d.m.Y',$timestamp) .' aurinko nousee tänään ' .date_sunrise($timestamp, SUNFUNCS_RET_STRING, $city['lat'], $city['lon'], 90, 3));
+      //var_dump($city);
+
+    }
+
     public static function getGrib($date)
     {
       return "grib is <a href=\"".Config::get('meteo_path')."gfs.".$date."/gfs.t00z.pgrb2.0p25.f001"."\">".Config::get('meteo_path')."gfs.".$date."/gfs.t00z.pgrb2.0p25.f001</a>";
