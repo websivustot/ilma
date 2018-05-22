@@ -54,6 +54,17 @@ class Meteo extends Model {
       //http://www.ftp.ncep.noaa.gov/data/nccf/com/gfs/prod/gfs.2018043000/
     }
 
+
+    public static function gribToSmall()
+    {
+
+      //exec("../data/wgrib2 ../data/biggrib.grb", $output, $var);
+      exec("wget http://www.ftp.ncep.noaa.gov/data/nccf/com/gfs/prod/gfs.2018052206/gfs.t06z.pgrb2.0p25.f001.idx");
+      //var_dump($output,$var);
+
+    }
+
+
     public static function execWgrib2($cities)
     {
       foreach ($cities as $key => $value)
@@ -62,7 +73,9 @@ class Meteo extends Model {
         $lon .= " -lon " . $value['lon'] . " " .$value['lat'];
       }
       $output = [""];
-      exec("../data/wgrib2 ../data/201804271200.small -match "."\":((U|V)GRD:10 m above ground|TMP:2 m above ground|PRES:surface|RH:2 m above ground):\""." -colon , -vt -lon 24.937500 60.170833" . $lon,$output);
+//      exec("../data/wgrib2 ../data/201804271200.small -match "."\":((U|V)GRD:10 m above ground|TMP:2 m above ground|PRES:surface|RH:2 m above ground):\""." -colon , -vt -lon 24.937500 60.170833" . $lon,$output);
+      exec("../data/wgrib2 ../data/gfs.t00z.pgrb2.0p25.f000 -match "."\":((U|V)GRD:10 m above ground|TMP:2 m above ground|PRES:surface|RH:2 m above ground):\""." -colon , -vt -lon 24.937500 60.170833" . $lon,$output);
+
       // -match \":((U|V)GRD:10 m above ground|TMP:2 m above ground|PRES:surface|RH:2 m above ground):\" -colon , -vt -lon 24.937500 60.170833 -lon 25.744444 62.240278", $output);
       //var_dump($lon);
       $data = [$cities,$output];
@@ -92,7 +105,7 @@ class Meteo extends Model {
     {
 
       $meteo[0][temp] = round($meteo[0][temp] - 273.15);
-      $meteo[0][pres] = ceil($meteo[0][pres]/1000) * 10;
+      $meteo[0][pres] = ceil($meteo[0][pres]/100);
       $meteo[0][hum] = round($meteo[0][hum]);
       $meteo[0][speed] = ceil($meteo[0][speed]/2) * 2;
       $meteo[0][dir] = ceil($meteo[0][dir]/5) * 5;

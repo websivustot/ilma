@@ -9,11 +9,12 @@
         {{ content_data.page.0.content | raw }}
 
           <p>Lämpötila <span class="param">{{ content_data.meteo.0.temp }} &deg; C</span></p>
-          <p class="param">Tuuli <span class="glyphicon glyphicon-arrow-up" style="transform: rotate({{content_data.meteo.0.dir}}deg);"></span> {{ content_data.meteo.0.speed }} m/s</p>
+          <p>Tuuli <span class="glyphicon glyphicon-arrow-up" style="transform: rotate({{content_data.meteo.0.dir}}deg);"></span>
+            <span class="param">{{ content_data.meteo.0.speed }} m/s</span></p>
 
-          <p class="param">Kosteus {{ content_data.meteo.0.hum }} %</p>
-          <p class="param">Ilmanpaine {{ content_data.meteo.0.pres }} hPa</p>
-          <p>Aurinko nousee tänään kello {{ content_data.sunrise.0 }}, laskee kello {{ content_data.sunrise.1 }}.</p>
+          <p>Kosteus <span class="param">{{ content_data.meteo.0.hum }} %</span></p>
+          <p>Ilmanpaine <span class="param">{{ content_data.meteo.0.pres }} hPa</span></p>
+          <p>Aurinko nousee tänään kello <span class="param">{{ content_data.sunrise.0 }}</span>, laskee kello <span class="param">{{ content_data.sunrise.1 }}</span>.</p>
           <ul class="cities">
             <li><strong>Kaupungit: </strong></li>
           {% for city in content_data.cities %}
