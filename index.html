@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-  <title>Sanat</title>
+  <title>Русско-финский, финско-русский словарный тренажер</title>
 </head>
 
 <body>
@@ -15,38 +15,35 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
   <script>
+
+    // function gets object keys of word/translation pairs
     function getKeys(object) {
       return Object.keys(object);
     }
 
+    // function forms buttons of translations
     function appendRandomButtons(obj) {
 
       for (key in obj) {
-        //console.log(obj[key],key);
         $('.random-words').append($('<button/>', {
           class: 'm-1 btn but' + key + ' btn-info',
           text: obj[key]
         }).click(function(elem) {
-          //console.log(elem.target.textContent);
           if (elem.target.textContent == $('.answer').text()) {
             $('.' + elem.target.classList[2]).toggleClass('btn-info btn-success');
-            //console.log('yes' + elem.target.classList[2]);
             $('.next').show();
-            console.log(errorIndicator);
             if (errorIndicator) {
               answers.push(elem.target.textContent);
             }
-            console.log(answers);
           } else {
-            //console.log(elem.target.classList[2]);
             $('.' + elem.target.classList[2]).toggleClass('btn-info btn-danger');
             errorIndicator = false;
           }
         }));
       }
-
     }
 
+    // function mixes words randomly  in object for buttons making
     function getRandomWords(words) {
       var min = 0;
       var max = 9;
@@ -57,74 +54,31 @@
       while (i < 10) {
         rand = min + Math.floor(Math.random() * (max + 1 - min));
         if (keys[rand]) {
-          //console.log(keys[rand]);
           arr[i] = keys[rand];
-          keys.splice(rand, 1); // начиная с позиции rand, удалить 1 элемент
+          keys.splice(rand, 1); // delete 1 element since rand position
           i++;
         }
       }
-      //rand = min + Math.floor(Math.random() * (max + 1 - min));
-      //console.log(arr);
-      //console.log(word,words);
       return arr;
     }
 
+    // function changes keys and values in object
     function flipObject(object) {
-      var sanatFlipped = {};
+      var wordsFlipped = {};
       $.each(object, function(i, el) {
-        sanatFlipped[el] = i;
+        wordsFlipped[el] = i;
       });
-      return sanatFlipped;
+      return wordsFlipped;
     }
 
-    var dimension = 1;
-    var answers = [];
-    var errorIndicator = true;
-    var sanat = {
-      "hylkää": "отказ",
-      "tulva": "наводнение",
-      "taju": "здравый смысл",
-      "kastella": "поливать цветы",
-      "mittakaava": "масштаб",
-      "naarmu": "царапина",
-      "karkea": "грубо",
-      "etänä": "удаленно",
-      "pilari": "столп",
-      "näkymä": "вид"
-    }
-
-
-    sanatFlipped = flipObject(sanat);
-    console.log(sanatFlipped);
-    $(function() {
-
-      var keys = getKeys(sanat);
+    // function runs play
+    function checkWords(dimension = 10, words) {
       let n = 0;
-
-      //console.log(Object.keys(sanat)[0]);
-
-      $('body').append(
-        $('<div/>', {
-          class: 'container'
-        }).append($('<div/>', {
-          class: 'jumbotron text-center'
-        })));
-
-      $('.jumbotron').append($('<button/>', {
-        class: 'btn btn-primary go',
-        text: 'Go!'
-      }).click(function() {
-        $('.go').remove();
-        $('.learning').show();
-
-        randomWords = getRandomWords(sanat);
-        appendRandomButtons(randomWords);
-      }));
-
+      var keys = getKeys(words);
       $('.jumbotron').append($('<button/>', {
           class: 'm-1 btn btn-outline-info btn-lg learning',
-          text: sanat[keys[n]]
-        }).hide()
+          text: words[keys[n]]
+        })
         .click(function() {
           $('.answer').show();
         })
@@ -141,100 +95,110 @@
         class: ' col-12 btn-block random-words'
       })));
 
+      randomWords = getRandomWords(words);
+      appendRandomButtons(randomWords);
+
       $('.jumbotron').append($('<button/>', {
-        class: 'm-1 btn btn-primary next',
-        text: '>>'
-      }).hide().click(function() {
+        class: 'm-1 btn btn-primary next'
+      }).append($('<i/>', {
+        class: 'fas fa-angle-double-right'
+      })).hide().click(function() {
         n++;
         if (n < dimension) {
-
           errorIndicator = true;
-          console.log(n);
           $('.next').hide();
           $('.random-words button').remove();
-          $('.learning').text(sanat[keys[n]]);
+          $('.learning').text(words[keys[n]]);
           $('.answer').text(keys[n]);
-          randomWords = getRandomWords(sanat);
+          randomWords = getRandomWords(words);
           appendRandomButtons(randomWords);
         } else {
           $('.jumbotron button').remove();
           $('.random-words button').remove();
-          $('.jumbotron').append($('<table/>', {
-            class: 'table'
-          }));
-          finWords = getKeys(sanat);
-          for (key in finWords) {
-            console.log(answers.indexOf(key) + key);
-            if (answers.indexOf(finWords[key]) != '-1') {
-              rowClass = "table-success";
-              iconClass = 'fas fa-check';
-              console.log(key + '-');
-            } else {
-              rowClass = "table-danger";
-              iconClass = 'fas fa-times';
-            };
-            $('.jumbotron table').append($('<tr/>', {
-              class: rowClass
-            }).append($('<td/>', {
-              text: finWords[key]
-            })).append($('<td/>', {
-              text: sanat[finWords[key]]
-            })).append($('<td/>').append($('<p/>').append($('<i/>', {
-              class: iconClass
-            })))));
-            //console.log(key,keys);
-          }
+          showResultTable(answers, words);
+
           $('.jumbotron').append($('<button/>', {
-            class: 'm-1 btn btn-primary rotate'
-          }).append($('<i/>',{class:'fas fa-play'})).click(function() {
-            $('.jumbotron table').remove();
-            $('.rotate').remove();
-            $('.ok').hide();
-            sanat = sanatFlipped;
-            keys = getKeys(sanat);
-            n = 0;
-            randomWords = getRandomWords(sanat);
-            appendRandomButtons(randomWords);
-            $('.jumbotron').append($('<button/>', {
-                class: 'm-1 btn btn-outline-info btn-lg learning',
-                text: sanat[keys[n]]
-              }).click(function() {
-                $('.answer').show();
-              })
-            );
-
-
-          })).append($('<button/>', {
-            class: 'm-1 btn btn-primary ok',
-            text: 'OK'
-          }).click(function() {
-            location.reload(true);
-          }));
+              class: 'm-1 btn btn-primary ok',
+              text: 'Ok'
+            }).click(function() {
+              location.reload();
+            }));
         }
+      }));
+    }
 
+    // function compares the results and shows them
+    function showResultTable(answers, words) {
+      console.log(answers,words);
+      $('.jumbotron').append($('<table/>', {
+        class: 'table'
+      }));
+      keys = getKeys(words);
+      for (key in keys) {
+        //console.log(answers.indexOf(key) + key);
+        if (answers.indexOf(keys[key]) != '-1') {
+          rowClass = "table-success";
+          iconClass = 'fas fa-check';
+          //console.log(key + '-');
+        } else {
+          rowClass = "table-danger";
+          iconClass = 'fas fa-times';
+        };
+        $('.jumbotron table').append($('<tr/>', {
+          class: rowClass
+        }).append($('<td/>', {
+          text: keys[key]
+        })).append($('<td/>', {
+          text: words[keys[key]]
+        })).append($('<td/>').append($('<p/>').append($('<i/>', {
+          class: iconClass
+        })))));
+      }
+    }
+
+
+    var dimension = 10; // set minimal value for debugging or 10 for usage
+    var errorIndicator = true;
+    var answers = [];
+
+    var sanat = {
+      "hylkää": "отказ",
+      "tulva": "наводнение",
+      "taju": "здравый смысл",
+      "kastella": "поливать цветы",
+      "mittakaava": "масштаб",
+      "naarmu": "царапина",
+      "karkea": "грубо",
+      "etänä": "удаленно",
+      "pilari": "столп",
+      "näkymä": "вид"
+    }
+
+    $(function() {
+
+      $('body').append(
+        $('<div/>', {
+          class: 'container'
+        }).append($('<div/>', {
+          class: 'jumbotron text-center'
+        })));
+
+      $('.jumbotron').append($('<button/>', {
+        class: 'm-1 btn btn-primary finrus',
+        text: 'Suomi-Русский'
+      }).click(function() {
+        $('.rusfin').remove();
+        $('.finrus').remove();
+        checkWords(dimension, flipObject(sanat));
+      })).append($('<button/>', {
+        class: 'm-1 btn btn-primary rusfin',
+        text: 'Русский-Suomi'
+      }).click(function() {
+        $('.rusfin').remove();
+        $('.finrus').remove();
+        checkWords(dimension, sanat);
       }));
 
-      /*.click(function() {
-          $('button').hide();
-          $('.jumbotron').append(
-            $('<div/>', {
-              class:'row'
-            }));
-          for (sana in sanat) {
-            $('.row').append(
-              $('<div/>', {
-                class:'col-1',
-                text: sana + ' - ' + sanat[sana]
-              })
-            );
-          }
-          $('.row').append('<div/>',{class:'btn btn-info',text:'sanat[0]'});
-
-          )
-        })))
-      );
-
-*/
     });
   </script>
 </body>
