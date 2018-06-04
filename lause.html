@@ -36,7 +36,7 @@
           }
           else {
             $(elem.target).appendTo('.random-words');
-            answer = answer.replace(elem.target.textContent,'');
+            answer = answer.replace(elem.target.textContent + ' ','');
           }
           if (!$('.random-words').html()) {
             $('.next').show();

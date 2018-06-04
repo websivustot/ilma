@@ -10,11 +10,11 @@ class MeteoController extends Controller
         //$meteo = Meteo::getGrib($grib_file_name);
         $isMeteoData = Meteo::isMeteoData('2018040100');
         var_dump($isMeteoData);
-        Meteo::gribToSmall();
+        //Meteo::gribToSmall();
         if (!$isMeteoData) {
           $cities = Meteo::getCities();
           $meteo = Meteo::execWgrib2($cities);
-          //$vars = Meteo::insertGribToMysql($meteo);
+          $vars = Meteo::insertGribToMysql($meteo);
           return ['meteo' => 'meteo data is added for '.count($cities).' cities'];
         }
 

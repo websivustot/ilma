@@ -73,8 +73,8 @@ class Meteo extends Model {
         $lon .= " -lon " . $value['lon'] . " " .$value['lat'];
       }
       $output = [""];
-//      exec("../data/wgrib2 ../data/201804271200.small -match "."\":((U|V)GRD:10 m above ground|TMP:2 m above ground|PRES:surface|RH:2 m above ground):\""." -colon , -vt -lon 24.937500 60.170833" . $lon,$output);
-      exec("../data/wgrib2 ../data/gfs.t00z.pgrb2.0p25.f000 -match "."\":((U|V)GRD:10 m above ground|TMP:2 m above ground|PRES:surface|RH:2 m above ground):\""." -colon , -vt -lon 24.937500 60.170833" . $lon,$output);
+      exec("../data/wgrib2 ../data/201804271200.small -match "."\":((U|V)GRD:10 m above ground|TMP:2 m above ground|PRES:surface|RH:2 m above ground):\""." -colon , -vt -lon 24.937500 60.170833" . $lon,$output);
+      //exec("../data/wgrib2 ../data/gfs.t00z.pgrb2.0p25.f000 -match "."\":((U|V)GRD:10 m above ground|TMP:2 m above ground|PRES:surface|RH:2 m above ground):\""." -colon , -vt -lon 24.937500 60.170833" . $lon,$output);
 
       // -match \":((U|V)GRD:10 m above ground|TMP:2 m above ground|PRES:surface|RH:2 m above ground):\" -colon , -vt -lon 24.937500 60.170833 -lon 25.744444 62.240278", $output);
       //var_dump($lon);

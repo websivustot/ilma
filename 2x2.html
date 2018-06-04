@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+  <title>Multiplication table trainer</title>
+</head>
+
+<body>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+  <script>
+
+    // function gets object size
+    function getValues(object){
+      var n = 0;
+      var arr = [];
+      for(key in object){
+        arr[n] = object[key];
+        n++;
+      }
+      return arr;
+    }
+
+    // function gets object keys of word/translation pairs
+    function getKeys(object) {
+      return Object.keys(object);
+    }
+
+    // function runs play
+    function checkWords(dimension = 10, words) {
+      let n = 0;
+      var keys = getKeys(words);
+      var stack = getKeys(words);
+      keys = getRandomWords(keys);
+      var values = getValues(words);
+      //console.log(keys, stack);
+      $('.jumbotron').append($('<button/>', {
+          class: 'm-1 btn btn-outline-info btn-lg learning',
+          text: stack[0]
+        })
+        .click(function() {
+          $('.answer').show();
+        })
+      );
+
+      $('.jumbotron').append($('<button/>', {
+        class: 'm-1 btn btn-info answer',
+        text: words[stack[0]]
+      }).hide());
+
+      $('.jumbotron').append($('<div/>', {
+        class: 'row',
+      }).append($('<div/>', {
+        class: ' col-12 btn-block random-words'
+      })));
+
+      randomWords = getRandomWords(values);
+      appendRandomButtons(randomWords);
+      //console.log(words, randomWords);
+      $('.jumbotron').append($('<button/>', {
+        class: 'm-1 btn btn-primary next'
+      }).append($('<i/>', {
+        class: 'fas fa-angle-double-right'
+      })).hide().click(function() {
+        n++;
+        if (n < dimension) {
+          errorIndicator = true;
+          keys = getKeys(words);
+          keys = getRandomWords(keys);
+          values = getValues(words);
+          $('.next').hide();
+          $('.random-words button').remove();
+          $('.learning').text(stack[0]);
+          $('.answer').text(words[stack[0]]);
+          randomWords = getRandomWords(values);
+          //console.log(n,randomWords);
+          appendRandomButtons(randomWords);
+          var index = stack.indexOf(stack[0]);
+          if (index !== -1) stack.splice(index, 1);
+          console.log(stack);
+        } else {
+          $('.jumbotron button').remove();
+          $('.random-words button').remove();
+          showResultTable(answers, words);
+
+          $('.jumbotron').append($('<button/>', {
+              class: 'm-1 btn btn-primary ok',
+              text: 'Ok'
+            }).click(function() {
+              location.reload();
+            }));
+        }
+      }));
+    }
+
+    // function forms buttons of translations
+    function appendRandomButtons(obj) {
+
+      for (key in obj) {
+        $('.random-words').append($('<button/>', {
+          class: 'm-1 btn but' + key + ' btn-info',
+          text: obj[key]
+        }).click(function(elem) {
+          if (elem.target.textContent == $('.answer').text()) {
+            $('.' + elem.target.classList[2]).toggleClass('btn-info btn-success');
+            $('.next').show();
+            if (errorIndicator) {
+              answers.push($('.learning').text());
+            }
+          } else {
+            $('.' + elem.target.classList[2]).toggleClass('btn-info btn-danger');
+            errorIndicator = false;
+          }
+        }));
+      }
+    }
+
+    // function mixes words randomly  in object for buttons making
+    function getRandomWords(words) {
+      //console.log(words);
+      var min = 0;
+      var max = words.length;
+      //console.log(words.length);
+      var randWords = [];
+      var i = 0;
+      var arr = {};
+      while (i < max) {
+        rand = min + Math.floor(Math.random() * (max + 1 - min));
+        if (words[rand]) {
+          arr[i] = words[rand];
+          words.splice(rand, 1); // delete 1 element since rand position
+          i++;
+        }
+      }
+      //console.log(arr);
+      return arr;
+    }
+
+    // function compares the results and shows them
+    function showResultTable(answers, words) {
+
+      $('.jumbotron').append($('<table/>', {
+        class: 'table'
+      }));
+      keys = getKeys(words);
+      console.log(answers,keys);
+      for (key in keys) {
+        //console.log(answers.indexOf(key) + key);
+        if (answers.indexOf(keys[key]) != '-1') {
+          rowClass = "table-success";
+          iconClass = 'fas fa-check';
+          //console.log(key + '-');
+        } else {
+          rowClass = "table-danger";
+          iconClass = 'fas fa-times';
+        };
+        $('.jumbotron table').append($('<tr/>', {
+          class: rowClass
+        }).append($('<td/>', {
+          text: keys[key]
+        })).append($('<td/>', {
+          text: words[keys[key]]
+        })).append($('<td/>').append($('<p/>').append($('<i/>', {
+          class: iconClass
+        })))));
+      }
+    }
+
+
+    var errorIndicator = true;
+    var answer = '';
+    var answers = [];
+    var sanat = {
+
+    /*  "2 x 2": "4",
+      "2 x 3": "6",
+      "2 x 4": "8",
+      "2 x 5": "10",
+      "2 x 6": "12",
+      "2 x 7": "14",
+      "2 x 8": "16",
+      "2 x 9": "18",
+
+      "3 x 2": "6",
+      "3 x 3": "9",
+      "3 x 4": "12",
+      "3 x 5": "15",
+      "3 x 6": "18",
+      "3 x 7": "21",
+      "3 x 8": "24",
+      "3 x 9": "27",
+
+      "4 x 2": "8",
+      "4 x 3": "12",
+      "4 x 4": "16",
+      "4 x 5": "20",
+      "4 x 6": "24",
+      "4 x 7": "28",
+      "4 x 8": "32",
+      "4 x 9": "36",
+
+      "5 x 2": "10",
+      "5 x 3": "15",
+      "5 x 4": "20",
+      "5 x 5": "25",
+      "5 x 6": "30",
+      "5 x 7": "35",
+      "5 x 8": "40",
+      "5 x 9": "45",
+
+      "6 x 2": "12",
+      "6 x 3": "18",
+      "6 x 4": "24",
+      "6 x 5": "30",*/
+      "6 x 6": "36",
+      "6 x 7": "42",
+      "6 x 8": "48",
+      "6 x 9": "54",
+
+      "7 x 2": "14",
+      "7 x 3": "21",
+      "7 x 4": "28",
+    /*  "7 x 5": "35",
+      "7 x 6": "42",
+      "7 x 7": "49",
+      "7 x 8": "56",
+      "7 x 9": "63",
+
+      "8 x 2": "16",
+      "8 x 3": "24",
+      "8 x 5": "40",
+      "8 x 6": "48",
+      "8 x 7": "56",
+      "8 x 8": "64",
+      "8 x 9": "72",
+
+      "9 x 2": "18",
+      "9 x 3": "27",
+      "9 x 4": "36",
+      "9 x 5": "45",
+      "9 x 6": "54",
+      "9 x 7": "63",
+      "9 x 8": "72",*/
+      "9 x 9": "81"
+    }
+    var dimension = 100; // set minimal value for debugging or 10 for usage
+    dimension = Object.keys(sanat).length;
+    //getObjectSize(sanat);
+    console.log(dimension,sanat);
+    $(function() {
+
+      $('body').append(
+        $('<div/>', {
+          class: 'container'
+        }).append($('<div/>', {
+          class: 'jumbotron text-center'
+        })));
+
+      $('.jumbotron').append($('<button/>', {
+        class: 'm-1 btn btn-primary finrus',
+        text: 'Go!'
+      }).click(function() {
+        $('.rusfin').remove();
+        $('.finrus').remove();
+        checkWords(dimension, sanat);
+      }))
+      /*.append($('<button/>', {
+        class: 'm-1 btn btn-primary rusfin',
+        text: 'Русский-Suomi'
+      }).click(function() {
+        $('.rusfin').remove();
+        $('.finrus').remove();
+        checkExpression(dimension, sanat);
+      }))*/
+      ;
+
+    });
+  </script>
+</body>
+
+</html>
