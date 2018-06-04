@@ -1,13 +1,13 @@
 <?php
-$config['db_user'] = 'dbu_vision_7';
-$config['db_password'] = 'U4igVVK2Py';
-$config['db_base'] = 'db_vision_13';
-$config['db_host'] = 'mysql.vision.z8.ru';
+$config['db_user'] = 'umi_artumy';
+$config['db_password'] = 'ladk5fkWi';
+$config['db_base'] = 'umi_ilma';
+$config['db_host'] = 'umi.mysql';
 $config['db_charset'] = 'UTF-8';
-define("MYSQL_USER", "dbu_vision_7");
-define("MYSQL_PASSWORD", "U4igVVK2Py");
-define("MYSQL_DB", "db_vision_13");
-define("MYSQL_SERVER", "mysql.vision.z8.ru");
+define("MYSQL_USER", "umi_artumy");
+define("MYSQL_PASSWORD", "ladk5fkWi");
+define("MYSQL_DB", "umi_ilma");
+define("MYSQL_SERVER", "umi.mysql");
 
 $config['path_root'] = __DIR__;
 $config['path_public'] = $config['path_root'] . '/../public';
@@ -23,4 +23,4 @@ $config['path_templates'] = $config['path_root'] . '/../templates';
 
 $config['path_logs'] = $config['path_root'] . '/../logs';
 
-$config['sitename'] = 'InnovaRef';
+$config['sitename'] = 'Ilma.Info Sää Suomessa';

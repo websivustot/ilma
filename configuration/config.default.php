@@ -1,13 +1,13 @@
 <?php
-$config['db_user'] = 'root';
-$config['db_password'] = '1';
-$config['db_base'] = 'ilma';
-$config['db_host'] = 'localhost';
+$config['db_user'] = 'umi_artumy';
+$config['db_password'] = 'ladk5fkWi';
+$config['db_base'] = 'umi_ilma';
+$config['db_host'] = 'umi.mysql';
 $config['db_charset'] = 'UTF-8';
-define("MYSQL_USER", "root");
-define("MYSQL_PASSWORD", "1");
-define("MYSQL_DB", "ilma");
-define("MYSQL_SERVER", "localhost");
+define("MYSQL_USER", "umi_artumy");
+define("MYSQL_PASSWORD", "ladk5fkWi");
+define("MYSQL_DB", "umi_ilma");
+define("MYSQL_SERVER", "umi.mysql");
 
 $config['path_root'] = __DIR__;
 $config['path_public'] = $config['path_root'] . '/../public';
